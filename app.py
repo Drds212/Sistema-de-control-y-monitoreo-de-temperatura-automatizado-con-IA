@@ -1,40 +1,30 @@
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-#from Controllers.UserController import setUsuario, getUsuarioId, getUsuarioNombre
+from data_base import db
+from Models.UserModel import User 
+from Models.ServidorModel import Servidor
+from Models.TemperaturaModel import Temperatura
+from Controllers.UserController import usuario_bp 
+from Controllers.ServidorController import servidor_bp
+from Controllers.TemperaturaController import temperatura_bp
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/app'
-db = SQLAlchemy(app)
+db.init_app(app) 
 migrate = Migrate(app, db)
 
+app.register_blueprint(usuario_bp)
+app.register_blueprint(servidor_bp)
+app.register_blueprint(temperatura_bp)
 
-from Models.UserModel import User
-from Models.SensorModel import Sensor
-from Models.SistemaEnfriamientoModel import SistemaEnfriamiento
-from Models.ServidorModel import Servidor
 
 @app.route("/")
 def hello_world():
     return render_template('index.html')
 
-"""
-@app.route("/getUsuarioPorId/<int:idUsuario>", methods=["GET"])
-def getUsuarioId(idUsuario):
-    return getUsuarioId(idUsuario)
-
-
-@app.route("/getUsuarioPorNombre/<nombreUsuario>", methods=["GET"])
-def getUsuarioNombre(nombreUsuario):
-    return getUsuarioNombre(nombreUsuario)
-
-
-@app.route("/setUsuario", methods=["POST"])
-def set_usuario():
-    return setUsuario()"""
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
