@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control Interactivo</title>
+    <link rel="stylesheet" href="panel_interactivo.css">
+</head>
+<body>
+    <div class="control-panel-interactive">
+        <div class="salon-grid">
+            <div class="salon" id="salon1">
+                <h3>Salón Uno</h3>
+                <div class="temperatura" data-temp="18">18°C</div>
+                <div class="alerta" style="display: none;"></div>
+            </div>
+            <div class="salon" id="salon2">
+                <h3>Salón Dos</h3>
+                <div class="temperatura" data-temp="30">30°C</div>
+                <div class="alerta" style="display: none;"></div>
+            </div>
+            <div class="salon" id="salon3">
+                <h3>Salón Tres</h3>
+                <div class="temperatura" data-temp="23">23°C</div>
+                <div class="alerta" style="display: none;"></div>
+            </div>
+            <div class="salon" id="salon4">
+                <h3>Salón Cuatro</h3>
+                <div class="temperatura" data-temp="15">15°C</div>
+                <div class="alerta" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const salones = document.querySelectorAll('.salon');
+
+            salones.forEach(salon => {
+                const temperaturaDiv = salon.querySelector('.temperatura');
+                const alertaDiv = salon.querySelector('.alerta');
+                const temp = parseInt(temperaturaDiv.dataset.temp); // Obtener la temperatura del atributo data-temp
+
+                let mensaje = '';
+                let claseAlerta = '';
+
+                if (temp < 20) {
+                    mensaje = '¡Muy Frío!';
+                    claseAlerta = 'alerta-frio';
+                } else if (temp > 25) {
+                    mensaje = '¡Muy Caliente!';
+                    claseAlerta = 'alerta-caliente';
+                } else {
+                    mensaje = 'Temperatura Ideal';
+                    claseAlerta = 'alerta-ideal';
+                }
+
+                alertaDiv.textContent = mensaje;
+                alertaDiv.classList.add(claseAlerta);
+                alertaDiv.style.display = 'block'; // Mostrar la alerta inicial
+
+                // Al hacer clic en la temperatura, mostrar un alert nativo
+                temperaturaDiv.addEventListener('click', () => {
+                    alert(`El ${salon.querySelector('h3').textContent} tiene una temperatura de ${temp}°C. ¡Atención: ${mensaje}!`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
